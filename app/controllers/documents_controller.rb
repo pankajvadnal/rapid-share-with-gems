@@ -2,7 +2,6 @@ class DocumentsController < ApplicationController
     before_action :authenticate_user!, except: [:public_show]
 
   def index
-    # puts "inside index"
     @documents = current_user.documents
     @documents_count = @documents.count
   end
@@ -13,13 +12,10 @@ class DocumentsController < ApplicationController
 
   def create
     @document = current_user.documents.new(document_params)
-    puts "Before save: #{@document}"
     if @document.save
-        puts "After save: #{@document}"
       redirect_to documents_path, notice: 'File uploaded successfully.'
     else
       # Handle case where the form submission is invalid
-      puts "Error: Unable to save document - Validation Errors: #{@document.errors.full_messages}"
       flash.now[:alert] = 'Error: Unable to save document.'
       render :new
     end
@@ -54,7 +50,6 @@ def public_show
     @document = Document.find_by(uuid: params[:uuid])
 
     if @document
-      # render the public view or redirect to download the file
       render :public_share
     else
       flash[:alert] = 'Document not found.'

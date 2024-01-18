@@ -8,11 +8,4 @@ Rails.application.routes.draw do
     patch 'toggle_public_share', action: :toggle_public_share, on: :collection, as: :toggle_public_share
   end
 
-#   resources :documents do
-#     member do
-#       get 'public/:uuid', action: :public_show, as: 'public_document'
-#       patch 'toggle_public_share', action: :toggle_public_share, as: :toggle_public_share
-#     end
-#   end
-
 end

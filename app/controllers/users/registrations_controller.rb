@@ -23,7 +23,6 @@ class Users::RegistrationsController < Devise::RegistrationsController
       clean_up_passwords resource
       set_minimum_password_length
       render :new, status: 422
-      # render :edit, status: :unprocessable_entity
     end
   end
 

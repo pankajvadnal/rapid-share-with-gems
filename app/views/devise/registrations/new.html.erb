@@ -1,11 +1,6 @@
 <h2>Sign up</h2>
 
 <%= render "devise/shared/links" %>
-<%
-=begin%>
- <div id="error-container"> <%= render "devise/shared/error_messages", resource: resource %> </div> 
-<%
-=end%>
 
 <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
 
@@ -30,20 +25,11 @@
     <em>(<%= @minimum_password_length %> characters minimum)</em>
     <% end %><br/>
     <%= f.password_field :password, autocomplete: "new-password" %>
-  </div>
-<br/>
-  <%
-=begin%>
- <div class="field">
-    <%= f.label :password_confirmation %><br />
-    <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
-  </div> 
-<%
-=end%>
-
+  </div><br/>
   <div class="actions">
     <%= f.submit "Sign up", class: "btn btn-small btn-primary mx-2" %>
   </div><br/>
 
   <%= render "devise/shared/error_messages", resource: resource %>
+  
 <% end %>
