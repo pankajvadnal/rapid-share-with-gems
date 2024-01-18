@@ -1,2 +1,2 @@
-# rapid-share-with-gems
-Rails onboarding assignment
+# README
+Rapid share with gems assignment

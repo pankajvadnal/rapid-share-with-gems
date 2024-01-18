@@ -1,0 +1,26 @@
+<h1>Upload File</h1>
+
+<%= form_with(model: @document, url: documents_path, multipart: true) do |form| %>
+<%= render "common/form_error_messages" %>
+  <div class="field">
+    <%= form.label :name %><br/>
+    <%= form.text_field :name %>
+  </div>
+  <div class="field">
+    <%= form.label :upload_date %><br/>
+    <%= form.date_field :upload_date %>
+  </div>
+  <div class="field">
+    <%= form.label :file %><br/>
+    <%= form.file_field :file %>
+  </div>
+  <div class="field">
+    <%= form.check_box :public_share %>
+    <%= form.label :public_share, 'Public Share' %>
+  </div><br/>
+  <div class="actions">
+    <%= form.submit 'Upload', class: 'btn btn-primary' %>
+  </div>
+<% end %>
+<br/>
+<%= link_to 'Back', documents_path, class: 'btn btn-primary' %>

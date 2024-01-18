@@ -1,0 +1,22 @@
+<h3>Shared File from <%= @document.user.name %> (<%= @document.user.username %>) </h3>
+
+<div class="table-responsive">
+  <table class="table table-bordered">
+    <tbody>
+      <tr>
+        <th>File Name</th>
+        <td><%= @document.name %></td>
+      </tr>
+      <tr>
+        <th>File Owner</th>
+        <td><%= @document.user.name %></td>
+      </tr>
+      <tr>
+        <th>File Download</th>
+        <td><%= link_to @document.file.filename.to_s, rails_blob_path(@document.file, disposition: "attachment") %></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<%= link_to 'Back to File Dashboard', documents_path, class: 'btn btn-secondary' %>
