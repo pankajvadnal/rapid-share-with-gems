@@ -12,12 +12,18 @@ class DocumentsController < ApplicationController
 
   def create
     @document = current_user.documents.new(document_params)
-    if @document.save
-      redirect_to documents_path, notice: 'File uploaded successfully.'
-    else
-      # Handle case where the form submission is invalid
-      flash.now[:alert] = 'Error: Unable to save document.'
-      render :new
+
+    begin
+      if @document.save
+        redirect_to documents_path, notice: 'File uploaded successfully.'
+      else
+        flash.now[:alert] = 'Error: Unable to save document.'
+        render :new
+      end
+    rescue => e
+      # Log the exception
+      flash[:alert] = "Error: #{e.message}"
+      redirect_to new_document_path
     end
   end
 
@@ -27,11 +33,17 @@ class DocumentsController < ApplicationController
   end
 
   def destroy
-    @document = Document.find(params[:id])
-    # Delete the attached file
-    @document.file.purge if @document.file.attached?
-    @document.destroy
-    redirect_to documents_path, notice: 'File deleted successfully.'
+    @document = current_user.documents.find(params[:id])
+    
+    if @document.destroy
+      # Purge the attached file upon successful deletion
+      @document.file.purge if @document.file.attached?
+
+      redirect_to documents_path, notice: 'File deleted successfully.'
+    else
+      flash[:alert] = 'Error: Unable to delete document.'
+      redirect_to documents_path
+    end
   end
 
   # Toggle the public_share attribute
