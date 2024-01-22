@@ -2,6 +2,7 @@ class Document < ApplicationRecord
 
   belongs_to :user
   has_one_attached :file
+  after_destroy :purge_file
 
   validates :uuid, presence: true, uniqueness: true
   validates :name, presence: true
@@ -21,6 +22,12 @@ class Document < ApplicationRecord
 
   def file_attached?
     errors.add(:file, 'must be attached') unless file.attached?
+  end
+
+  private
+
+  def purge_file
+    file.purge if file.attached?
   end
 
 end
