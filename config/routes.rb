@@ -1,7 +1,10 @@
 Rails.application.routes.draw do
 
   root 'main#home'
-  devise_for :users, controllers: { registrations: 'users/registrations', sessions: 'users/sessions' }
+  devise_for :users, controllers: {
+    registrations: 'users/registrations',
+    sessions: 'users/sessions'
+  }
 
   resources :documents do
     get 'public/:uuid', action: :public_show, on: :collection, as: 'public_document'
