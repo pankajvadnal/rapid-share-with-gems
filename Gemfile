@@ -71,23 +71,19 @@ end
 
 group :development, :test do
   gem 'rspec-rails', '~> 5.0'
-end
-
-group :development, :test do
   gem 'factory_bot_rails'
+  gem 'faker'
+  gem 'simplecov', require: false
+  gem 'shoulda-matchers'
 end
 
 group :test, :development do
   gem 'rails-controller-testing'
 end
 
-group :development, :test do
-  gem 'faker'
-end
-
 group :test do
   # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
   gem "capybara"
-  gem "selenium-webdriver"
-  gem "webdrivers"
+  gem 'selenium-webdriver'
+  gem 'webdrivers'
 end
