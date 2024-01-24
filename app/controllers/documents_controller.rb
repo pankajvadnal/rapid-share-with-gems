@@ -34,15 +34,24 @@ class DocumentsController < ApplicationController
 
   def destroy
     @document = current_user.documents.find(params[:id])
-    
-    if @document.destroy
-      # Purge the attached file upon successful deletion
-      @document.file.purge if @document.file.attached?
+    begin
+      ActiveRecord::Base.transaction do
+        # Disable automatic purging during the transaction
+        @document.file.blob.unfreeze
+        # Explicitly purge the attachment if it exists
+        @document.file.purge if @document.file.attached?
+        # Destroy the document record
+        @document.destroy!
+      end
 
-      redirect_to documents_path, notice: 'File deleted successfully.'
-    else
-      flash[:alert] = 'Error: Unable to delete document.'
+      flash[:notice] = 'Document and associated file were successfully destroyed.'
       redirect_to documents_path
+    rescue StandardError => e
+      flash[:alert] = "Error destroying document: #{e.message}"
+      redirect_back(fallback_location: documents_path)
+    ensure
+      # Re-enable automatic purging after the transaction
+      @document.file.blob.freeze
     end
   end
 
