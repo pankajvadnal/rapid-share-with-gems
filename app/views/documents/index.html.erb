@@ -1,0 +1,42 @@
+<h1>File Dashboard - <%= @documents_count %> files</h1>
+
+<%= link_to 'Upload New File', new_document_path, class: 'btn btn-primary mb-3' %>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">File</th>
+      <th scope="col">Upload Date</th>
+      <th scope="col">File Size</th>
+      <th scope="col">Sharing</th>
+      <th scope="col">Public Link</th>
+      <th scope="col">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @documents.each_with_index do |document, index| %>
+      <tr>
+        <th scope="row"><%= index + 1 %></th>
+        <td><%= document.file.filename.to_s %></td>
+        <%
+        if document.upload_date.present?
+            formatted_date = document.upload_date.strftime('%Y-%m-%d')
+        else
+            formatted_date = 'N/A'
+        end
+        %>
+        <td><%= formatted_date %></td>
+        <td><%= number_to_human_size(document.file.blob.byte_size) %></td>
+        <td>
+            <%= button_to(document.public_share ? 'Disable' : 'Enable', toggle_public_share_documents_path(document), method: :patch, class: 'btn btn-secondary btn-sm') %>
+        </td>
+        <td><%= link_to 'Public Link', public_document_documents_path(uuid: document.uuid) %></td>
+        <td>
+          <%= link_to 'Download', rails_blob_path(document.file, disposition: "attachment"), class: 'btn btn-secondary btn-sm' %>
+          <%= link_to 'Delete', document_path(document), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-sm' %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
